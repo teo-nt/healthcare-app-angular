@@ -1,0 +1,35 @@
+<div class="bg-white rounded-3 p-3 text-center">
+    <h1 class="fw-bold">Login</h1>
+    <form class="d-flex flex-column" [formGroup]="form" (ngSubmit)="login()">
+        <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" formControlName="username"/>
+            <mat-icon matPrefix>person</mat-icon>
+            @if (form.get('username').hasError) {
+                <mat-error>Username is required</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password"/>
+            <mat-icon matPrefix>lock</mat-icon>
+            <mat-icon matSuffix (click)="hide = !hide">
+                {{ hide ? 'visibility_off' : 'visibility'}}
+            </mat-icon>
+            @if (form.get('password').hasError) {
+                <mat-error>Password is required</mat-error>
+            }
+        </mat-form-field>
+
+        <button [disabled]="!form.valid" class="btn btn-primary">Login</button>
+    </form>
+    <p class="mt-4">Don't you have an account? Register <a routerLink="/register">here</a></p>
+    @if (invalidLogin) {
+        <div class="alert alert-danger">
+            <strong>Error:</strong>
+            Invalid email or password.
+        </div>
+    }
+</div>
+
