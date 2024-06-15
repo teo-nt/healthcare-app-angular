@@ -24,11 +24,11 @@
 
         <button [disabled]="!form.valid" class="btn btn-primary">Login</button>
     </form>
-    <p class="mt-4">Don't you have an account? Register <a routerLink="/register">here</a></p>
+    <p class="mt-4">Don't you have an account? Register <a routerLink="/welcome/register">here</a></p>
     @if (invalidLogin) {
         <div class="alert alert-danger">
             <strong>Error:</strong>
-            Invalid email or password.
+            Invalid username or password.
         </div>
     }
 </div>

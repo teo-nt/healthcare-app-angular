@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LoginRequest } from 'src/app/interfaces/login-request';
 import { jwtDecode } from 'jwt-decode';
 import { LoggedInUser } from 'src/app/interfaces/logged-in-user';
+import { ErrorResponse } from 'src/app/interfaces/error-response';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,14 @@ export class LoginComponent {
         const access_token = response.token;
         localStorage.setItem('auth_token', access_token)
         const decodedToken = jwtDecode(access_token) as unknown as LoggedInUser
-        
+
+        this.authService.user.set({
+          nameid: decodedToken.nameid,
+          unique_name: decodedToken.unique_name,
+          role: decodedToken.role,
+          email: decodedToken.email
+        })
+  
         switch (decodedToken.role) {
           case 'Admin':
             this.router.navigate(['/admin-home'])
@@ -44,13 +52,14 @@ export class LoginComponent {
             this.router.navigate(['/home'])
             break
           default:
-            
+          
         }
       },
       error: (response) => {
+        // console.log(response.error as ErrorResponse)
         this.invalidLogin = true;
         this.form.reset()  
-        setTimeout(() => this.resetError(), 3000)            
+        setTimeout(() => this.resetError(), 3500)            
       }
     })
   }
