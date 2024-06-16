@@ -1,3 +1,9 @@
 .width {
-    max-width: 316px;
+    max-width: 572px;
+}
+
+@media (max-width:767.5px) {
+    .width {
+        max-width: 316px;
+    }
 }
