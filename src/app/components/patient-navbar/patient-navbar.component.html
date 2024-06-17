@@ -32,25 +32,25 @@
         </ul>
         
       </div>
-      <div>
-        <div class="d-flex align-items-center">
-            @if (authService.user()) {
-                <a [matMenuTriggerFor]="menu" role="button" class="d-flex gap-2 text-white align-items-center text-decoration-none">
-                    <div class="initial-letter bg-success initialism fw-bold rounded rounded-circle d-flex justify-content-center align-items-center">
-                        {{ authService.user().unique_name[0]}}
-                    </div>
-                    <div class="text-dark">
-                        {{authService.user().unique_name}}
-                    </div>
-                </a>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="logout()">
-                        <mat-icon>logout</mat-icon>
-                        <span>Logout</span>
-                    </button>
-                </mat-menu>
-            }          
+      @if (authService.user()) {
+        <div>
+          <div class="d-flex align-items-center">        
+              <a [matMenuTriggerFor]="menu" role="button" class="d-flex gap-2 text-white align-items-center text-decoration-none">
+                  <div class="initial-letter bg-success initialism fw-bold rounded rounded-circle d-flex justify-content-center align-items-center">
+                      {{ authService.user().unique_name[0]}}
+                  </div>
+                  <div class="text-dark">
+                      {{authService.user().unique_name}}
+                  </div>
+              </a>
+              <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="logout()">
+                      <mat-icon>logout</mat-icon>
+                      <span>Logout</span>
+                  </button>
+              </mat-menu>           
+          </div>
         </div>
-      </div>
+      }
     </div>
   </nav>
