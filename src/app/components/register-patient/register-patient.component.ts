@@ -50,8 +50,6 @@ export class RegisterPatientComponent {
   registerPatient() {
     this.authService.registerPatient(this.form.value as RegisterPatient).subscribe({
       next: (response) => {
-        console.log(response)
-
         this.matSnackbar.open("You were registered successfully", 'Close', {
           duration: 4000,
           horizontalPosition: 'center'
