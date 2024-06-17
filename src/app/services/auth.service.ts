@@ -6,6 +6,8 @@ import { LoginResponse } from '../interfaces/login-response';
 import { jwtDecode } from 'jwt-decode';
 import { LoggedInUser } from '../interfaces/logged-in-user';
 import { Router } from '@angular/router';
+import { RegisterPatient } from '../interfaces/register-patient';
+import { RegisterDoctor } from '../interfaces/register-doctor';
 
 const API_URL = environment.apiUrl;
 
@@ -19,6 +21,14 @@ export class AuthService {
 
   login(data: LoginRequest) {
     return this.http.post<LoginResponse>(`${API_URL}/user/login`, data)
+  }
+
+  registerPatient(data: RegisterPatient) {
+    return this.http.post(`${API_URL}/user/register-patient`, data)
+  }
+
+  registerDoctor(data: RegisterDoctor) {
+    return this.http.post(`${API_URL}/user/register-doctor`, data)
   }
 
   logout() {

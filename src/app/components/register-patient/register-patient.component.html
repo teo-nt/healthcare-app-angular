@@ -140,5 +140,18 @@
         </div>
     }   
     <p class="mt-4">Are you a doctor? Register <a routerLink="/welcome/register-doctor">here</a></p>
-    
+
+    @if (errorMessage) {
+        <div class="alert alert-danger">
+            <strong>Error: </strong>
+            {{errorMessage}}
+        </div>
+    }
+    @if (errors) {
+        <ul class="alert alert-danger">
+            @for (error of errorList; track error) {
+                <li>{{ error}}</li>
+            }                             
+        </ul>
+    }   
 </div>
