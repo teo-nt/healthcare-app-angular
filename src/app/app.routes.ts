@@ -6,12 +6,18 @@ import { PatientHomeComponent } from './components/patient-home/patient-home.com
 import { DoctorHomeComponent } from './components/doctor-home/doctor-home.component';
 import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { PatientHomepageComponent } from './components/patient-homepage/patient-homepage.component';
+import { AccountComponent } from './components/account/account.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "welcome/login", pathMatch: 'full'},
-    { path: "home", component: PatientHomeComponent },
-    { path: "doctor-home", component: DoctorHomeComponent },
-    { path: "admin-home", component: AdminHomeComponent },
+    { path: "patient", component: PatientHomeComponent, children: [
+        {path: "", redirectTo: "homepage", pathMatch: 'full'},
+        {path: "homepage", component: PatientHomepageComponent},
+        {path: "account", component: AccountComponent}
+    ]},
+    { path: "doctor", component: DoctorHomeComponent },
+    { path: "admin", component: AdminHomeComponent },
     { path: "welcome", component: WelcomeComponent, children: [
         { path: '', redirectTo: "login", pathMatch: 'full' },
         { path: "login", component: LoginComponent},

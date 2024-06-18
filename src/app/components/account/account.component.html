@@ -1,0 +1,93 @@
+<div class="h-auto d-flex align-items-center mt-3 col-md-4 mx-auto">
+    <div class="container rounded rounded-3 text-center bg-secondary-subtle border border-black border-2 p-2 mb-3">
+        <h1 class="fw-bold">
+            Account Details
+        </h1>
+        @if (userDetails) {
+            <div>
+                <div class="circle rounded-circle bg-info fw-bold d-inline-flex align-items-center justify-content-center align-middle">
+                    {{ userDetails.username[0] }}
+                </div>
+            </div>
+            <hr>
+            <div class="row fs-6 mb-2">
+                <div class="col-5 fw-bold text-end">Username: </div>
+                <div class="col text-start">{{ userDetails.username }}</div>                
+            </div>
+            <div class="row fs-6 mb-2">
+                <div class="col-5 fw-bold text-end">Email: </div>
+                <div class="col text-start">{{ userDetails.email }}</div>                
+            </div>
+            <div class="row fs-6 mb-2">
+                <div class="col-5 fw-bold text-end">Role: </div>
+                <div class="col text-start">{{ userDetails.userRole }}</div>                
+            </div>
+            <div class="row fs-6 mb-2">
+                <div class="col-5 fw-bold text-end">Status: </div>
+                <div class="col text-start">{{ userDetails.status }}</div>                
+            </div>
+            <hr>     
+            @if (userDetails.patient) {
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Firstname: </div>
+                    <div class="col text-start">{{ userDetails.patient.firstname }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Lastname: </div>
+                    <div class="col text-start">{{ userDetails.patient.lastname }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Age: </div>
+                    <div class="col text-start">{{ userDetails.patient.age }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Gender: </div>
+                    <div class="col text-start">{{ userDetails.patient.gender }}</div>                
+                </div>
+
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Phone Number: </div>
+                    <div class="col text-start">{{ userDetails.patient.phoneNumber }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Medical History: </div>
+                    <div class="col-7 text-start text-break">{{ userDetails.patient.medicalHistory }}</div>                
+                </div>
+            } @else if (userDetails.doctor) {
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Firstname: </div>
+                    <div class="col text-start">{{ userDetails.doctor.firstname }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Lastname: </div>
+                    <div class="col text-start">{{ userDetails.doctor.lastname }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">City: </div>
+                    <div class="col text-start">{{ userDetails.doctor.city }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Address: </div>
+                    <div class="col text-start">{{ userDetails.doctor.address }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Street Number: </div>
+                    <div class="col text-start">{{ userDetails.doctor.streetNumber }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Phone Number: </div>
+                    <div class="col text-start">{{ userDetails.doctor.phoneNumber }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Appointment Duration: </div>
+                    <div class="col text-start">{{ userDetails.doctor.appointmentDuration }}</div>                
+                </div>
+                <div class="row fs-6 mb-2">
+                    <div class="col-5 fw-bold text-end">Speciality: </div>
+                    <div class="col text-start">{{ userDetails.doctor.speciality?.specialityName }}</div>                
+                </div>
+            }
+            <button class="btn btn-primary mt-3" (click)="onUpdateEmailAndPassword()">Update email and password</button>
+        }
+    </div>
+</div>

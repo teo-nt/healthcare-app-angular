@@ -43,13 +43,13 @@ export class LoginComponent {
   
         switch (decodedToken.role) {
           case 'Admin':
-            this.router.navigate(['/admin-home'])
+            this.router.navigate(['/admin'])
             break
           case 'Doctor':
-            this.router.navigate(['/doctor-home'])
+            this.router.navigate(['/doctor'])
             break
           case 'Patient':
-            this.router.navigate(['/home'])
+            this.router.navigate(['/patient'])
             break
           default:
           

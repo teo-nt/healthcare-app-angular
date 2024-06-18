@@ -8,6 +8,7 @@ import { LoggedInUser } from '../interfaces/logged-in-user';
 import { Router } from '@angular/router';
 import { RegisterPatient } from '../interfaces/register-patient';
 import { RegisterDoctor } from '../interfaces/register-doctor';
+import { UserDetails } from '../interfaces/user-details';
 
 const API_URL = environment.apiUrl;
 
@@ -29,6 +30,10 @@ export class AuthService {
 
   registerDoctor(data: RegisterDoctor) {
     return this.http.post(`${API_URL}/user/register-doctor`, data)
+  }
+
+  getUserDetails() {
+    return this.http.get<UserDetails>(`${API_URL}/user/details/${this.user().nameid}`)
   }
 
   logout() {

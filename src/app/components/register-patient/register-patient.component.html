@@ -131,7 +131,7 @@
             <mat-icon matPrefix>notes</mat-icon>
         </mat-form-field>
 
-        <button [disabled]="!form.valid" class="btn btn-primary" (click)="registerPatient()">Sign up</button>
+        <button [disabled]="!form.valid" class="btn btn-primary w-50 mx-auto" (click)="registerPatient()">Sign up</button>
     </form>
     @if (form.get('password').hasError('pattern')) {
         <div class="mt-3 alert alert-danger">       
