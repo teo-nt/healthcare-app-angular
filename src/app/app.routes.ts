@@ -9,17 +9,18 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PatientHomepageComponent } from './components/patient-homepage/patient-homepage.component';
 import { AccountComponent } from './components/account/account.component';
 import { PatientAppointmentsComponent } from './components/patient-appointments/patient-appointments.component';
+import { adminAuthGuard, doctorAuthGuard, patientAuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: "", redirectTo: "welcome/login", pathMatch: 'full'},
-    { path: "patient", component: PatientHomeComponent, children: [
+    { path: "patient", component: PatientHomeComponent, canActivate: [patientAuthGuard], children: [
         {path: "", redirectTo: "homepage", pathMatch: 'full'},
         {path: "homepage", component: PatientHomepageComponent},
         {path: "account", component: AccountComponent},
         {path: "appointments", component: PatientAppointmentsComponent}
     ]},
-    { path: "doctor", component: DoctorHomeComponent },
-    { path: "admin", component: AdminHomeComponent },
+    { path: "doctor", component: DoctorHomeComponent, canActivate: [doctorAuthGuard] },
+    { path: "admin", component: AdminHomeComponent, canActivate: [adminAuthGuard] },
     { path: "welcome", component: WelcomeComponent, children: [
         { path: '', redirectTo: "login", pathMatch: 'full' },
         { path: "login", component: LoginComponent},

@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor() {
     const token = this.authService.getToken()  
-    if (token) {
+    if (token && this.authService.isLoggedIn()) {
       const decodedToken = jwtDecode(token) as unknown as LoggedInUser
       this.authService.user.set({
         nameid: decodedToken.nameid,
@@ -24,6 +24,8 @@ export class AppComponent {
         role: decodedToken.role,
         email: decodedToken.email
       })
+    } else {
+      this.authService.logout()
     }
   }
 }
