@@ -7,12 +7,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LoginRequest } from 'src/app/interfaces/login-request';
 import { jwtDecode } from 'jwt-decode';
 import { LoggedInUser } from 'src/app/interfaces/logged-in-user';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { ErrorResponse } from 'src/app/interfaces/error-response';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatInputModule, MatIconModule, ReactiveFormsModule, RouterLink],
+  imports: [MatInputModule, MatIconModule, ReactiveFormsModule, RouterLink, MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -21,6 +22,7 @@ export class LoginComponent {
   router = inject(Router)
   hide = true;
   invalidLogin = false;
+  loadingImage = false
 
   form = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -28,8 +30,10 @@ export class LoginComponent {
   })
 
   login() {
+    this.loadingImage = true
     this.authService.login(this.form.value as LoginRequest).subscribe({
       next: (response) => {
+        this.loadingImage = false
         const access_token = response.token;
         localStorage.setItem('auth_token', access_token)
         const decodedToken = jwtDecode(access_token) as unknown as LoggedInUser
@@ -57,6 +61,7 @@ export class LoginComponent {
       },
       error: (response) => {
         // console.log(response.error as ErrorResponse)
+        this.loadingImage = false
         this.invalidLogin = true;
         this.form.reset()  
         setTimeout(() => this.resetError(), 3500)            
