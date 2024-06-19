@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { RegisterPatient } from '../interfaces/register-patient';
 import { RegisterDoctor } from '../interfaces/register-doctor';
 import { UserDetails } from '../interfaces/user-details';
+import { UserUpdate } from '../interfaces/user-update';
 
 const API_URL = environment.apiUrl;
 
@@ -34,6 +35,10 @@ export class AuthService {
 
   getUserDetails() {
     return this.http.get<UserDetails>(`${API_URL}/user/details/${this.user().nameid}`)
+  }
+
+  updateEmailAndPassword(data: UserUpdate) {
+    return this.http.patch(`${API_URL}/user/update`, data)
   }
 
   logout() {
