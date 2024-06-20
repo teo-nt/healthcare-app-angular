@@ -1,0 +1,8 @@
+.initial-letter {
+    width: 3rem;
+    height: 3rem;
+}
+
+.nav-item > .active {
+    color: black !important;
+}

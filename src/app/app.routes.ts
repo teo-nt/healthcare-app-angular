@@ -10,6 +10,7 @@ import { PatientHomepageComponent } from './components/patient-homepage/patient-
 import { AccountComponent } from './components/account/account.component';
 import { PatientAppointmentsComponent } from './components/patient-appointments/patient-appointments.component';
 import { adminAuthGuard, doctorAuthGuard, patientAuthGuard } from './guards/auth.guard';
+import { UsersComponent } from './components/users/users.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "welcome/login", pathMatch: 'full'},
@@ -19,8 +20,12 @@ export const routes: Routes = [
         {path: "account", component: AccountComponent},
         {path: "appointments", component: PatientAppointmentsComponent}
     ]},
-    { path: "doctor", component: DoctorHomeComponent, canActivate: [doctorAuthGuard] },
+    { path: "doctor", component: DoctorHomeComponent, canActivate: [doctorAuthGuard], children: [
+        {path: 'account', component: AccountComponent}
+    ]},
     { path: "admin", component: AdminHomeComponent, canActivate: [adminAuthGuard], children: [
+        {path: '', redirectTo: 'account', pathMatch: 'full'},
+        {path: 'users', component: UsersComponent},
         {path: 'account', component: AccountComponent}
     ]},
     { path: "welcome", component: WelcomeComponent, children: [
