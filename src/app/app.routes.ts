@@ -20,7 +20,9 @@ export const routes: Routes = [
         {path: "appointments", component: PatientAppointmentsComponent}
     ]},
     { path: "doctor", component: DoctorHomeComponent, canActivate: [doctorAuthGuard] },
-    { path: "admin", component: AdminHomeComponent, canActivate: [adminAuthGuard] },
+    { path: "admin", component: AdminHomeComponent, canActivate: [adminAuthGuard], children: [
+        {path: 'account', component: AccountComponent}
+    ]},
     { path: "welcome", component: WelcomeComponent, children: [
         { path: '', redirectTo: "login", pathMatch: 'full' },
         { path: "login", component: LoginComponent},

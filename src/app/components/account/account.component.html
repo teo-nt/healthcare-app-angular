@@ -1,11 +1,11 @@
-<div class="h-auto d-flex align-items-center mt-3 col-md-4 mx-auto">
-    <div class="container rounded rounded-3 text-center bg-secondary-subtle border border-black border-2 p-2 mb-3">
+<div class="bg-primary-subtle min-vh-100"><div class="d-flex align-items-center col-md-4 mx-auto">
+    <div class="container rounded rounded-3 text-center bg-secondary-subtle border border-black border-2 p-2 my-3">
         <h1 class="fw-bold">
             Account Details
         </h1>
         @if (userDetails) {
             <div>
-                <div class="circle rounded-circle bg-info fw-bold d-inline-flex align-items-center justify-content-center align-middle">
+                <div class="circle rounded-circle bg-info fw-bold d-inline-flex align-items-center justify-content-center align-middle initialism">
                     {{ userDetails.username[0] }}
                 </div>
             </div>
@@ -90,4 +90,5 @@
             <button class="btn btn-primary mt-3" (click)="onUpdateEmailAndPassword()">Update email and password</button>
         }
     </div>
+</div>
 </div>
