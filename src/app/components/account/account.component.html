@@ -42,7 +42,11 @@
                 </div>
                 <div class="row fs-6 mb-2">
                     <div class="col-5 fw-bold text-end">Gender: </div>
-                    <div class="col text-start">{{ userDetails.patient.gender }}</div>                
+                    @if (userDetails.patient.gender === 'F') {
+                        <div class="col text-start">Female</div>     
+                    } @else if (userDetails.patient.gender === 'M') {
+                        <div class="col text-start">Male</div>     
+                    }
                 </div>
 
                 <div class="row fs-6 mb-2">
