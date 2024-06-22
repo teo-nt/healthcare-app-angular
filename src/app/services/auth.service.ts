@@ -37,6 +37,10 @@ export class AuthService {
     return this.http.get<UserDetails>(`${API_URL}/user/details/${this.user().nameid}`)
   }
 
+  getAllUsers() {
+    return this.http.get<UserDetails[]>(`${API_URL}/user/details`)
+  }
+
   updateEmailAndPassword(data: UserUpdate) {
     return this.http.patch(`${API_URL}/user/update`, data)
   }
