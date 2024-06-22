@@ -22,10 +22,14 @@
             }
         </mat-form-field>
 
-        <button [disabled]="!form.valid" class="btn btn-primary">Login</button>
-        @if (loadingImage) {
-            <mat-spinner diameter="30" class="mx-auto mt-1"></mat-spinner>
-        }
+        <button [disabled]="!form.valid" class="btn btn-primary">
+            @if (loadingImage) {
+                <mat-spinner diameter="20" class="mx-auto mt-1"></mat-spinner>
+            } @else {
+                Login
+            }
+        </button>
+        
     </form>
     <p class="mt-4">Don't you have an account? Register <a routerLink="/welcome/register">here</a></p>
     @if (invalidLogin) {
