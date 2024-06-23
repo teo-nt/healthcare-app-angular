@@ -52,44 +52,44 @@
                                     @if (user.userRole === 'Doctor') {
                                         <div class="d-flex align-items-center gap-4 my-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Firstname:</div>
-                                            <input type="text" disabled [value]="user.doctor.firstname" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.firstname" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Lastname:</div>
-                                            <input type="text" disabled [value]="user.doctor.lastname" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.lastname" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">City:</div>
-                                            <input type="text" disabled [value]="user.doctor.city" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.city" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Address:</div>
-                                            <input type="text" disabled [value]="user.doctor.address" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.address" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Street Number:</div>
-                                            <input type="number" disabled [value]="user.doctor.streetNumber" />
+                                            <input type="number" [disabled]="disabled" [(ngModel)]="user.doctor.streetNumber" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Phone Number:</div>
-                                            <input type="text" disabled [value]="user.doctor.phoneNumber" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.phoneNumber" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Appointment Duration:</div>
-                                            <input type="number" disabled [value]="user.doctor.appointmentDuration" />
+                                            <input type="number" [disabled]="disabled" [(ngModel)]="user.doctor.appointmentDuration" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Speciality:</div>
-                                            <input type="text" disabled [value]="user.doctor.speciality ? user.doctor.speciality.specialityName : '-'" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.doctor.speciality.specialityName" />
                                         </div>
                                     } @else if (user.userRole === 'Patient') {
                                         <div class="d-flex align-items-center gap-4 my-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Firstname:</div>
-                                            <input type="text" disabled [(ngModel)]="user.patient.firstname" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.patient.firstname" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Lastname:</div>
-                                            <input type="text" disabled [(ngModel)]="user.patient.lastname" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.patient.lastname" />
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Age:</div>
@@ -105,14 +105,17 @@
                                         </div>
                                         <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Phone Number:</div>
-                                            <input type="text" disabled [(ngModel)]="user.patient.phoneNumber" />
+                                            <input type="text" [disabled]="disabled" [(ngModel)]="user.patient.phoneNumber" />
                                         </div>
                                         <div class="d-flex align-items-start gap-4 my-2">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Medical History:</div>
-                                            <textarea class="col-7 text-break" rows="5" disabled [value]="user.patient.medicalHistory"></textarea>
+                                            <textarea class="col-7 text-break" rows="5" [disabled]="disabled" [(ngModel)]="user.patient.medicalHistory"></textarea>
                                         </div>
                                     }
                                     <div class="offset-4 offset-md-3 offset-lg-2 gap-4 mt-3">
+                                        @if (unsavedErrorMessage) {
+                                            <div class="text-danger mb-1">{{ unsavedErrorMessage }}</div>
+                                        }
                                         @if (user.status === 'Pending' || user.status === 'Disabled') {
                                             <button class="btn btn-success btn-sm ms-2 py-1 px-2" (click)="onActivate(user)">
                                                 <mat-icon class="align-bottom">verified_user</mat-icon>
@@ -124,10 +127,22 @@
                                                 Disable
                                             </button>
                                         }
-                                        <button class="btn btn-sm btn-primary ms-2 py-1 px-2">
-                                            <mat-icon class="align-bottom">edit</mat-icon>
-                                            Edit
-                                        </button>
+                                        @if (disabled) {
+                                            <button class="btn btn-sm btn-primary ms-2 py-1 px-2" (click)="disabled = false">
+                                                <mat-icon class="align-bottom">edit</mat-icon>
+                                                Edit
+                                            </button>
+                                        } @else {
+                                            <button class="btn btn-sm btn-primary ms-2 py-1 px-2" (click)="onSave(user)">
+                                                <mat-icon class="align-bottom">save</mat-icon>
+                                                Save
+                                            </button>
+                                            <button class="btn btn-sm btn-danger ms-2 py-1 px-2" (click)="onCancel(user)">
+                                                <mat-icon class="align-bottom">cancel</mat-icon>
+                                                Cancel
+                                            </button>
+                                        }
+                                        
                                     </div>
                                 </td>
                             </tr>

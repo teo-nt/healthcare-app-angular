@@ -29,6 +29,8 @@ export class UsersComponent implements OnInit {
   selectedPatients = false
   inputUsername = ''
   inputEmail = ''
+  unsavedErrorMessage = ''
+  disabled = true
 
   constructor(private dialog: MatDialog) {}
 
@@ -73,10 +75,12 @@ export class UsersComponent implements OnInit {
   }
 
   toggleDetails(id: number) {
-    this.selectedUserId = this.selectedUserId === id ? null : id
+    if (this.checkUnsaved()) return
+    this.selectedUserId = this.selectedUserId === id ? null : id   
   }
 
   showAll() {
+    if (this.checkUnsaved()) return
     this.tempUsers = this.users
     this.selectedAll = true
     this.selectedDoctors = false
@@ -84,9 +88,11 @@ export class UsersComponent implements OnInit {
     this.selectedUserId = null
     this.inputUsername = ''
     this.inputEmail = ''
+    this.disabled = true
   }
 
   showDoctors() {
+    if (this.checkUnsaved()) return
     this.tempUsers = this.users.filter(u => u.userRole === 'Doctor')
     this.selectedDoctors = true
     this.selectedAll = false
@@ -94,9 +100,11 @@ export class UsersComponent implements OnInit {
     this.selectedUserId = null
     this.inputUsername = ''
     this.inputEmail = ''
+    this.disabled = true
   }
 
   showPatients() {
+    if (this.checkUnsaved()) return
     this.tempUsers = this.users.filter(u => u.userRole === 'Patient')
     this.selectedPatients = true
     this.selectedAll = false
@@ -104,24 +112,29 @@ export class UsersComponent implements OnInit {
     this.selectedUserId = null
     this.inputUsername = ''
     this.inputEmail = ''
+    this.disabled = true
   }
 
   searchByUsername() {
+    if (this.checkUnsaved()) return
     this.inputEmail = ''
     this.tempUsers = this.users.filter(u => u.username.includes(this.inputUsername))
     this.selectedAll = true
     this.selectedDoctors = false
     this.selectedPatients = false
     this.selectedUserId = null
+    this.disabled = true
   }
 
   searchByEmail() {
+    if (this.checkUnsaved()) return
     this.inputUsername = ''
     this.tempUsers = this.users.filter(u => u.email.includes(this.inputEmail))
     this.selectedAll = true
     this.selectedDoctors = false
     this.selectedPatients = false
     this.selectedUserId = null
+    this.disabled = true
   }
 
   onActivate(user: UserDetails) {
@@ -168,9 +181,26 @@ export class UsersComponent implements OnInit {
     })
   }
 
+  onSave(user: UserDetails) {
+    console.log(user)
+  }
+
+  onCancel(user: UserDetails) {
+    this.reloadComponent()
+  }
+
   private reloadComponent() {
     this.router.navigateByUrl('/admin/account', {skipLocationChange: true}).then(() => {
       this.router.navigate(['admin'])
     })
+  }
+
+  private checkUnsaved() {
+    if (this.selectedUserId && !this.disabled) {
+      this.unsavedErrorMessage = 'You must save changes or cancel!'
+      return true
+    }
+    this.unsavedErrorMessage = ''
+    return false
   }
 }
