@@ -1,7 +1,12 @@
 <div class="bg-primary-subtle min-vh-100">
     <div class="container py-3">
-        <div class="d-flex flex-column  gap-3 justify-content-between align-items-center">
+        <div class="d-flex flex-column gap-3 justify-content-between align-items-center">
             <span class="fw-bold fs-3">Users</span>
+            <div>
+                <button class="btn btn-outline-primary mx-1" [class]="{'active': selectedAll}" (click)="showAll()">All</button>
+                <button class="btn btn-outline-primary mx-1" [class]="{'active': selectedDoctors}" (click)="showDoctors()">Doctors</button>
+                <button class="btn btn-outline-primary mx-1" [class]="{'active': selectedPatients}" (click)="showPatients()">Patients</button>
+            </div>
             <div>
                 <input type="text" class="form-control rounded rounded-2 py-1 px-2" 
                         placeholder="Search by username" 
@@ -9,10 +14,12 @@
                         (input)="searchByUsername()" 
                 />
             </div>
-            <div class="ms-1">
-                <button class="btn btn-outline-primary m-1" [class]="selectedAll ? 'active' : ''" (click)="showAll()">All</button>
-                <button class="btn btn-outline-primary m-1" [class]="selectedDoctors ? 'active' : ''" (click)="showDoctors()">Doctors</button>
-                <button class="btn btn-outline-primary m-1" [class]="selectedPatients ? 'active' : ''" (click)="showPatients()">Patients</button>
+            <div class="mb-1">
+                <input type="text" class="form-control rounded rounded-2 py-1 px-2" 
+                        placeholder="Search by email" 
+                        [(ngModel)]="inputEmail" 
+                        (input)="searchByEmail()" 
+                />
             </div>
         </div>
         <div class="shadow-sm mt-2 text-start">
@@ -25,15 +32,15 @@
                         <th role="button" class="px-3 border py-2" (click)="sortUsers('status')">Status {{ sortSign('status') }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-group-divider">
                     @for (user of tempUsers; track user.id) {
-                        <tr role="button" (click)="toggleDetails(user.id)">
-                            <td class="px-3">{{ user.username }}</td>
-                            <td class="px-3">{{ user.email }}</td>
+                        <tr role="button" (click)="toggleDetails(user.id)" [class]="{'disable-click': user.userRole === 'Admin', 'table-active': user.id === selectedUserId}">
+                            <td class="px-3 text-break">{{ user.username }}</td>
+                            <td class="px-3 text-break">{{ user.email }}</td>
                             <td class="px-3">{{ user.userRole }}</td>
                             @if (user.status === 'Pending') {
                                 <td class="px-3 text-warning">{{ user.status }}</td>
-                            } @else if (user.status === 'Declined') {
+                            } @else if (user.status === 'Disabled') {
                                 <td class="px-3 text-danger">{{ user.status }}</td>
                             } @else {
                                 <td class="px-3 text-secondary">{{ user.status }}</td>
@@ -76,19 +83,19 @@
                                             <input type="text" disabled [value]="user.doctor.speciality ? user.doctor.speciality.specialityName : '-'" />
                                         </div>
                                     } @else if (user.userRole === 'Patient') {
-                                        <div class="d-flex gap-4 m-1">
+                                        <div class="d-flex align-items-center gap-4 my-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Firstname:</div>
-                                            <span>{{ user.patient.firstname }}</span>
+                                            <input type="text" disabled [(ngModel)]="user.patient.firstname" />
                                         </div>
-                                        <div class="d-flex gap-4 mb-1">
+                                        <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Lastname:</div>
-                                            <span>{{ user.patient.lastname }}</span>
+                                            <input type="text" disabled [(ngModel)]="user.patient.lastname" />
                                         </div>
-                                        <div class="d-flex gap-4 m-1">
+                                        <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Age:</div>
                                             <span>{{ user.patient.age }}</span>
                                         </div>
-                                        <div class="d-flex gap-4 mb-1">
+                                        <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Gender:</div>
                                             @if (user.patient.gender === 'F') {
                                                 <span>Female</span>
@@ -96,20 +103,25 @@
                                                 <span>Male</span>
                                             }
                                         </div>
-                                        <div class="d-flex gap-4 m-1">
+                                        <div class="d-flex align-items-center gap-4 mb-1">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Phone Number:</div>
-                                            <span>{{ user.patient.phoneNumber }}</span>
+                                            <input type="text" disabled [(ngModel)]="user.patient.phoneNumber" />
                                         </div>
-                                        <div class="d-flex gap-4 mb-1">
+                                        <div class="d-flex align-items-start gap-4 my-2">
                                             <div class="col-4 col-md-3 col-lg-2 text-end">Medical History:</div>
-                                            <textarea class="col-4 text-break" rows="5" disabled [value]="user.patient.medicalHistory"></textarea>
+                                            <textarea class="col-7 text-break" rows="5" disabled [value]="user.patient.medicalHistory"></textarea>
                                         </div>
                                     }
                                     <div class="offset-4 offset-md-3 offset-lg-2 gap-4 mt-3">
                                         @if (user.status === 'Pending') {
-                                            <button class="btn btn-success btn-sm ms-2 py-1 px-2">
+                                            <button class="btn btn-success btn-sm ms-2 py-1 px-2" (click)="onActivate(user)">
                                                 <mat-icon class="align-bottom">verified_user</mat-icon>
-                                                Enable
+                                                Activate
+                                            </button>
+                                        } @else if (user.status === 'Approved') {
+                                            <button class="btn btn-danger btn-sm ms-2 py-1 px-2">
+                                                <mat-icon class="align-bottom">block</mat-icon>
+                                                Disable
                                             </button>
                                         }
                                         <button class="btn btn-sm btn-primary ms-2 py-1 px-2">

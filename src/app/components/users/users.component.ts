@@ -21,6 +21,7 @@ export class UsersComponent implements OnInit {
   selectedDoctors = false
   selectedPatients = false
   inputUsername = ''
+  inputEmail = ''
 
   ngOnInit(): void {
     this.authService.getAllUsers().subscribe((data: UserDetails[]) => {
@@ -91,10 +92,24 @@ export class UsersComponent implements OnInit {
   }
 
   searchByUsername() {
+    this.inputEmail = ''
     this.tempUsers = this.users.filter(u => u.username.includes(this.inputUsername))
     this.selectedAll = true
     this.selectedDoctors = false
     this.selectedPatients = false
     this.selectedUserId = null
+  }
+
+  searchByEmail() {
+    this.inputUsername = ''
+    this.tempUsers = this.users.filter(u => u.email.includes(this.inputEmail))
+    this.selectedAll = true
+    this.selectedDoctors = false
+    this.selectedPatients = false
+    this.selectedUserId = null
+  }
+
+  onActivate(user: UserDetails) {
+    
   }
 }
