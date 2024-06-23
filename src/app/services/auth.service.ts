@@ -45,6 +45,14 @@ export class AuthService {
     return this.http.patch(`${API_URL}/user/update`, data)
   }
 
+  enableAccount(id: number) {
+    return this.http.patch(`${API_URL}/user/enable/${id}`, null)
+  }
+
+  disableAccount(id: number) {
+    return this.http.patch(`${API_URL}/user/disable/${id}`, null)
+  }
+
   logout() {
     localStorage.removeItem('auth_token')
     this.user.set(null)

@@ -113,13 +113,13 @@
                                         </div>
                                     }
                                     <div class="offset-4 offset-md-3 offset-lg-2 gap-4 mt-3">
-                                        @if (user.status === 'Pending') {
+                                        @if (user.status === 'Pending' || user.status === 'Disabled') {
                                             <button class="btn btn-success btn-sm ms-2 py-1 px-2" (click)="onActivate(user)">
                                                 <mat-icon class="align-bottom">verified_user</mat-icon>
                                                 Activate
                                             </button>
                                         } @else if (user.status === 'Approved') {
-                                            <button class="btn btn-danger btn-sm ms-2 py-1 px-2">
+                                            <button class="btn btn-danger btn-sm ms-2 py-1 px-2" (click)="onDisable(user)">
                                                 <mat-icon class="align-bottom">block</mat-icon>
                                                 Disable
                                             </button>

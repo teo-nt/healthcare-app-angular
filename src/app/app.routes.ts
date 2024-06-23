@@ -24,7 +24,7 @@ export const routes: Routes = [
         {path: 'account', component: AccountComponent}
     ]},
     { path: "admin", component: AdminHomeComponent, canActivate: [adminAuthGuard], children: [
-        {path: '', redirectTo: 'account', pathMatch: 'full'},
+        {path: '', redirectTo: 'users', pathMatch: 'full'},
         {path: 'users', component: UsersComponent},
         {path: 'account', component: AccountComponent}
     ]},

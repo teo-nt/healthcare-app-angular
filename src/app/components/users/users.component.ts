@@ -1,9 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { sortBy } from 'lodash-es';
 import { UserDetails } from 'src/app/interfaces/user-details';
 import { AuthService } from 'src/app/services/auth.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorResponse } from 'src/app/interfaces/error-response';
 
 @Component({
   selector: 'app-users',
@@ -13,7 +18,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrl: './users.component.css'
 })
 export class UsersComponent implements OnInit {
+  router = inject(Router)
   authService = inject(AuthService)
+  matSnackBar = inject(MatSnackBar)
   users: UserDetails[] = []
   tempUsers: UserDetails[] = []
   selectedUserId: number | null = null
@@ -22,6 +29,8 @@ export class UsersComponent implements OnInit {
   selectedPatients = false
   inputUsername = ''
   inputEmail = ''
+
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.authService.getAllUsers().subscribe((data: UserDetails[]) => {
@@ -73,6 +82,8 @@ export class UsersComponent implements OnInit {
     this.selectedDoctors = false
     this.selectedPatients = false
     this.selectedUserId = null
+    this.inputUsername = ''
+    this.inputEmail = ''
   }
 
   showDoctors() {
@@ -81,6 +92,8 @@ export class UsersComponent implements OnInit {
     this.selectedAll = false
     this.selectedPatients = false
     this.selectedUserId = null
+    this.inputUsername = ''
+    this.inputEmail = ''
   }
 
   showPatients() {
@@ -89,6 +102,8 @@ export class UsersComponent implements OnInit {
     this.selectedAll = false
     this.selectedDoctors = false
     this.selectedUserId = null
+    this.inputUsername = ''
+    this.inputEmail = ''
   }
 
   searchByUsername() {
@@ -110,6 +125,52 @@ export class UsersComponent implements OnInit {
   }
 
   onActivate(user: UserDetails) {
-    
+    const dialogRef = this.dialog.open(ConfirmDialogComponent)
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.authService.enableAccount(user.id).subscribe({
+          next: (response) => {
+            this.reloadComponent()
+          },
+          error: (err) => {
+            this.matSnackBar.open(`Error enabling account`, 'Close', {
+              duration: 4000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center'
+            })
+            this.reloadComponent()
+          }
+        })
+      }
+    })
+  }
+
+  onDisable(user: UserDetails) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent)
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.authService.disableAccount(user.id).subscribe({
+          next: (response) => {
+            this.reloadComponent()
+          },
+          error: (err) => {
+            this.matSnackBar.open(`Error disabling account`, 'Close', {
+              duration: 4000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center'
+            })
+            this.reloadComponent()
+          }
+        })
+      }
+    })
+  }
+
+  private reloadComponent() {
+    this.router.navigateByUrl('/admin/account', {skipLocationChange: true}).then(() => {
+      this.router.navigate(['admin'])
+    })
   }
 }
