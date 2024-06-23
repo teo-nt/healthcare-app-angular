@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { LoggedInUser } from 'src/app/interfaces/logged-in-user';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { ErrorResponse } from 'src/app/interfaces/error-response';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -59,9 +60,14 @@ export class LoginComponent {
           
         }
       },
-      error: (response) => {
-        // console.log(response.error as ErrorResponse)
+      error: (response: HttpErrorResponse) => {
         this.loadingImage = false
+        if (response.status === HttpStatusCode.Locked) {
+          this.router.navigate(['welcome', 'error'])
+        }
+        if ((response.error as ErrorResponse).message === 'This account is not activated yet') {
+          this.router.navigate(['welcome', 'error'])
+        }
         this.invalidLogin = true;
         this.form.reset()  
         setTimeout(() => this.resetError(), 3500)            
