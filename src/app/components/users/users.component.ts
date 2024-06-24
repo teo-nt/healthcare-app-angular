@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorResponse } from 'src/app/interfaces/error-response';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-users',
@@ -30,6 +31,7 @@ export class UsersComponent implements OnInit {
   inputUsername = ''
   inputEmail = ''
   unsavedErrorMessage = ''
+  error = ''
   disabled = true
 
   constructor(private dialog: MatDialog) {}
@@ -182,11 +184,26 @@ export class UsersComponent implements OnInit {
   }
 
   onSave(user: UserDetails) {
-    //TODO
-    console.log(user)
+    this.authService.updateUserDetails(user).subscribe({
+      next: (response) => {
+        this.matSnackBar.open('User was updated', 'OK', {
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center'
+        })
+        this.reloadComponent()
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === HttpStatusCode.Unauthorized) {
+          this.router.navigate(['welcome'])
+        }
+        this.error = (err.error as ErrorResponse).message
+      }
+    })
   }
 
   onCancel(user: UserDetails) {
+    this.error = ''
     this.reloadComponent()
   }
 

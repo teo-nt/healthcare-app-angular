@@ -45,6 +45,10 @@ export class AuthService {
     return this.http.patch(`${API_URL}/user/update`, data)
   }
 
+  updateUserDetails(user: UserDetails) {
+    return this.http.patch(`${API_URL}/user/update-details`, user)
+  }
+
   enableAccount(id: number) {
     return this.http.patch(`${API_URL}/user/enable/${id}`, null)
   }
