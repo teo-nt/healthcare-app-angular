@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-primary border border-black border-2 border-top-0 border-end-0 border-start-0">
     <div class="container-xxl fs-5">
-      <a class="navbar-brand h-100 text-white me-5" routerLink="homepage">
+      <a class="navbar-brand h-100 text-white me-5 d-flex align-items-center" routerLink="availability">
         <img src="../../../assets/logo.png" alt="Logo" width="35px" height="30px" class="h-100 me-1"/>
         Healthcare App
       </a>
@@ -10,15 +10,15 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link text-white" [routerLinkActive]="['active']" routerLink="homepage">
-              <mat-icon class="align-bottom">home</mat-icon>
-              Home
+            <a class="nav-link text-white" [routerLinkActive]="['active']" routerLink="availability">
+              <mat-icon class="align-bottom">event_available</mat-icon>
+              Availability
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" [routerLinkActive]="['active']" routerLink="appointments">
               <mat-icon class="align-bottom">date_range</mat-icon>
-              My Appointments
+              Appointments
             </a>
           </li>
           <li class="nav-item">
