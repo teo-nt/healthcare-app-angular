@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
   inputEmail = ''
   unsavedErrorMessage = ''
   error = ''
+  errors = []
   disabled = true
 
   constructor(private dialog: MatDialog) {}
@@ -198,12 +199,20 @@ export class UsersComponent implements OnInit {
           this.router.navigate(['welcome'])
         }
         this.error = (err.error as ErrorResponse).message
+
+        this.errors = []
+        for(const error in err.error.errors) {
+          for (const errorItem of err.error.errors[error]) {
+            this.errors.push(errorItem)
+          }
+        }
       }
     })
   }
 
   onCancel(user: UserDetails) {
     this.error = ''
+    this.errors = []
     this.reloadComponent()
   }
 

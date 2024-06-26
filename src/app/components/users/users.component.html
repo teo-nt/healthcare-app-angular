@@ -121,6 +121,13 @@
                                         @if (error) {
                                             <div class="alert alert-danger">{{ error }}</div>
                                         }
+                                        @if (errors.length != 0) {
+                                            <div class="alert alert-danger">   
+                                                @for (error of errors; track error) {
+                                                    <div>- {{ error }}</div>
+                                                }    
+                                            </div>                                                                           
+                                        }
                                         @if (user.status === 'Pending' || user.status === 'Disabled') {
                                             <button class="btn btn-success btn-sm ms-2 py-1 px-2" (click)="onActivate(user)">
                                                 <mat-icon class="align-bottom">verified_user</mat-icon>
