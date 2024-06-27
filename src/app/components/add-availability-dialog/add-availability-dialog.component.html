@@ -1,0 +1,31 @@
+<div>
+    <p mat-dialog-title class="text-center fs-4">Add availability</p>
+    <div mat-dialog-content>
+        <form class="row">
+            <div class="col-12 mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input id="date" class="form-control" type="date" name="date" [(ngModel)]="date">
+            </div>
+            <div class="col-6">
+                <label for="startTime" class="form-label">Start Time</label>
+                <input id="startTime" class="form-control" type="time" name="startTime" [(ngModel)]="startTime">
+            </div>
+            <div class="col-6">
+                <label for="endTime" class="form-label">End Time</label>
+                <input id="endTime" class="form-control" type="time" name="endTime" [(ngModel)]="endTime">
+            </div>
+        </form>
+        @if (error) {
+            <div class="mt-3 text-danger">{{ error }}</div>
+        }
+        @if (errors.length > 0) {
+            @for (error of errors; track error) {
+                <div class="mt-3 text-danger">{{ error }}</div>
+            }
+        }
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-evenly">
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-button color="warn" (click)="onConfirm()">Confirm</button>
+    </div>
+</div>
