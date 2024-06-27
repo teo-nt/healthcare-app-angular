@@ -1,0 +1,10 @@
+td:hover {
+    background-color: rgb(168, 168, 236);
+    color: white;
+}
+
+td.faded {
+    background-color: rgb(184, 183, 183);
+    color: black;
+    cursor: not-allowed;
+}

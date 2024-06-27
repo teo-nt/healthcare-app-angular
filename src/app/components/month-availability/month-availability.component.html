@@ -1,0 +1,16 @@
+<div>
+    <h2>{{ currentMonth }} {{ currentYear }}</h2>
+    <table class="table w-75 mx-auto">
+        <tbody>
+            @for (week of monthTable; track week) {
+                <tr>
+                    @for (day of week; track day) {
+                        <td class="border" role="button" [class]="{'faded': isPast(day)}" (click)="onShowingDayTimeslots(day)">
+                            {{ day }}
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>      
+    </table>
+</div>
