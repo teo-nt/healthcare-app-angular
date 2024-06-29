@@ -1,13 +1,17 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { KeyValuePipe } from '@angular/common';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { groupBy } from 'lodash-es';
+import { AppointmentRequest } from 'src/app/interfaces/appointment-request';
 import { Timeslot } from 'src/app/interfaces/timeslot';
 import { Doctor } from 'src/app/interfaces/user-details';
+import { AuthService } from 'src/app/services/auth.service';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { PatientService } from 'src/app/services/patient.service';
 
 @Component({
   selector: 'app-doctor-availability-dialog',
@@ -18,9 +22,14 @@ import { DoctorService } from 'src/app/services/doctor.service';
 })
 export class DoctorAvailabilityDialogComponent implements OnInit {
   doctorService = inject(DoctorService)
+  authService = inject(AuthService)
+  patientService = inject(PatientService)
+  matSnackBar = inject(MatSnackBar)
   selectedDate = ''
-  selectedTimeslot: number = 0
+  selectedTimeslotId: number = 0
+  selectedTimeslot: Timeslot
   timeslots: Timeslot[]
+  confirmWindow = false
   groupedByDate: {   
       [key: string]: Timeslot[]
   } = {}
@@ -34,7 +43,6 @@ export class DoctorAvailabilityDialogComponent implements OnInit {
       (response) => {
         this.timeslots = response
         this.groupedByDate = groupBy(this.timeslots, 'date')
-        console.log(this.groupedByDate)
       }
     )
   }
@@ -45,15 +53,46 @@ export class DoctorAvailabilityDialogComponent implements OnInit {
 
   selectDate(date: string) {
     this.selectedDate = this.selectedDate === date ? '' : date
+    this.selectedTimeslot = null
+    this.selectedTimeslotId = 0
   }
 
-  selectTimeslot(id: number) {
-    this.selectedTimeslot = id
+  selectTimeslot(timeslot: Timeslot) {
+    this.selectedTimeslotId = timeslot.id
+    this.selectedTimeslot = timeslot
   }
 
   onBook() {
-    // doctorId
-    // timeslotId
-    // patientId
+    this.confirmWindow = true;
+  }
+
+  onCancel() {
+    this.confirmWindow = false;
+  }
+
+  onConfirm() {
+    const data = {
+      patientUserId: this.authService.user().nameid,
+      doctorId: this.doctor.id,
+      timeslotId: this.selectedTimeslot.id
+    } as AppointmentRequest
+    this.patientService.bookAppointment(data).subscribe({
+      next: (response) => {
+        this.close()
+        this.matSnackBar.open("Appointment is on wait to be approved by doctor", "OK", {
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center'
+        })
+      },
+      error: (err: HttpErrorResponse) => {
+        this.close()
+        this.matSnackBar.open("Error booking the appointment", "Close", {
+          duration: 4000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center'
+        })
+      }
+    })
   }
 }

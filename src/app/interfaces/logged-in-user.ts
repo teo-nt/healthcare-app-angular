@@ -1,5 +1,5 @@
 export interface LoggedInUser {
-    nameid: string;
+    nameid: number;
     unique_name: string;
     role: string;
     email: string;
