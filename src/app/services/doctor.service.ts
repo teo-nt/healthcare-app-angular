@@ -3,6 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { Timeslot } from '../interfaces/timeslot';
 import { AvailabilityRequest } from '../interfaces/availability-request';
+import { DoctorRequest } from '../interfaces/doctor-request';
+import { Doctor } from '../interfaces/user-details';
 
 const API_URL = environment.apiUrl;
 
@@ -18,5 +20,9 @@ export class DoctorService {
 
   addAvailability(data: AvailabilityRequest) {
     return this.http.post(`${API_URL}/doctor/availability`, data)
+  }
+
+  getDoctors(data: DoctorRequest) {
+    return this.http.post<Doctor[]>(`${API_URL}/doctor/search`, data)
   }
 }
