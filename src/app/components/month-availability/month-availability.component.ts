@@ -75,7 +75,7 @@ export class MonthAvailabilityComponent implements OnInit {
   }
 
   isPast(day: number) {
-    const checkedDate = new Date(this.currentYear, this.currentMonthNumber, day, 22)
+    const checkedDate = new Date(this.currentYear, this.currentMonthNumber, day + 1)
     if (checkedDate < new Date()) {
       return true;
     }
