@@ -1,12 +1,14 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DoctorRequest } from 'src/app/interfaces/doctor-request';
 import { ErrorResponse } from 'src/app/interfaces/error-response';
 import { Doctor } from 'src/app/interfaces/user-details';
 import { AuthService } from 'src/app/services/auth.service';
 import { DoctorService } from 'src/app/services/doctor.service';
+import { DoctorAvailabilityDialogComponent } from '../doctor-availability-dialog/doctor-availability-dialog.component';
 
 @Component({
   selector: 'app-patient-homepage',
@@ -22,6 +24,8 @@ export class PatientHomepageComponent {
   city: string;
   doctors: Doctor[] = []
   errorMessage: string
+
+  constructor(private dialog: MatDialog) {}
 
   searchDoctors() {
     const data = {speciality: this.speciality, city: this.city} as DoctorRequest
@@ -40,7 +44,10 @@ export class PatientHomepageComponent {
     })
   }
 
-  onSeeAvailability(id: number) {
-    
+  onSeeAvailability(doctor: Doctor) {
+    this.dialog.open(DoctorAvailabilityDialogComponent, {
+      data: doctor,
+      autoFocus: 'false'
+    })
   }
 }

@@ -18,6 +18,10 @@ export class DoctorService {
     return this.http.get<Timeslot[]>(`${API_URL}/doctor/timeslots`)
   }
 
+  getFutureAvailableTimeslots(doctorId: number) {
+    return this.http.get<Timeslot[]>(`${API_URL}/doctor/availability/${doctorId}`)
+  }
+
   addAvailability(data: AvailabilityRequest) {
     return this.http.post(`${API_URL}/doctor/availability`, data)
   }
