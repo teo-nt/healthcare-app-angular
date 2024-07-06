@@ -8,3 +8,10 @@
     background-color: white;
     border-radius: 10px;
 }
+
+@media (max-width: 600px) {
+    .initial-letter {
+        width: 2rem;
+        height: 2rem;
+    }
+}
